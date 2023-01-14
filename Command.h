@@ -7,21 +7,19 @@
 
 
 #include <string>
-#include "Info.h"
 #include "DefaultIO.h"
 
 class Command {
 private:
-    Info& ctx;
     DefaultIO& dio;
 protected:
     std::string description; // description in the menu.
     std::string instruction; // the message shown after the command is chosen.
-    Info &getCtx();
+    std::string getDes();
 
     DefaultIO &getDio() const;
 public:
-    Command(Info& ctx, DefaultIO &dio);
+    Command(DefaultIO &dio);
     virtual void execute() = 0;
     virtual ~Command();
     virtual void printDesc();

@@ -8,10 +8,13 @@
 
 #include <string>
 #include "DefaultIO.h"
+#include "KNN.h"
 
 class Command {
 private:
     DefaultIO& dio;
+    KNN& knn;
+
 protected:
     std::string description; // description in the menu.
     std::string instruction; // the message shown after the command is chosen.

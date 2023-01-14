@@ -12,8 +12,8 @@
 
 class Command {
 private:
-    DefaultIO& dio;
-    KNN& knn;
+    DefaultIO &dio;
+    KNN &knn;
 
 protected:
     std::string description; // description in the menu.
@@ -21,11 +21,16 @@ protected:
     std::string getDes();
 
     DefaultIO &getDio() const;
+
 public:
-    Command(DefaultIO &dio);
+    Command(DefaultIO &dio, KNN &knn);
+
     virtual void execute() = 0;
+
     virtual ~Command();
+
     virtual void printDesc();
+
     virtual void printInst();
 
     const std::string &getDescription() const;

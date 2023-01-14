@@ -28,7 +28,7 @@ void Command::printInst() {
  * @param ctx Things the command needs to know in order to work.
  * @param dio DefaultIO used.
  */
-Command::Command(DefaultIO& dio) : dio(dio) {}
+Command::Command(DefaultIO& dio, KNN& knn) : dio(dio), knn(knn){}
 
 /**
  * @brief Getter for the description.

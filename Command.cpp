@@ -28,7 +28,7 @@ void Command::printInst() {
  * @param ctx Things the command needs to know in order to work.
  * @param dio DefaultIO used.
  */
-Command::Command(Info& ctx, DefaultIO& dio): ctx(ctx), dio(dio) {}
+Command::Command(DefaultIO& dio) : dio(dio) {}
 
 /**
  * @brief Getter for the description.
@@ -48,14 +48,7 @@ const std::string &Command::getInstruction() const {
     return instruction;
 }
 
-/**
- * @brief Getter for the Info.
- * 
- * @return Info& The Info.
- */
-Info &Command::getCtx() {
-    return ctx;
-}
+
 
 /**
  * @brief Getter for the defaultIO.

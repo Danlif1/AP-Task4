@@ -6,8 +6,23 @@
 #define AP_4_ALGORITHSETTINGS_H
 
 
-class AlgorithSettings {
+#include "Command.h"
 
+class AlgorithSettings : public Command {
+private:
+
+public:
+    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {};
+
+    std::vector<std::string> split(const std::string &str, char delimiter);
+
+    std::string validK(const std::string &s);
+
+    std::string validMetric(const std::string &s);
+
+    std::string answerToClient(std::vector<std::string> v);
+
+    virtual void execute() override;
 };
 
 

@@ -10,17 +10,18 @@
 
 class AlgorithSettings : public Command {
 private:
-
-public:
-    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {};
-
-    std::vector<std::string> split(const std::string &str, char delimiter);
-
     std::string validK(const std::string &s);
 
     std::string validMetric(const std::string &s);
 
     std::string answerToClient(std::vector<std::string> v);
+
+    std::vector<std::string> split(const std::string &str, char delimiter);
+
+    void updateSettings(std::vector<std::string> v, std::string &answer);
+
+public:
+    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {};
 
     virtual void execute() override;
 };

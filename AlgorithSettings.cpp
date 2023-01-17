@@ -12,11 +12,8 @@ void AlgorithSettings::execute() {
     std::string response = dio.read();
     std::vector<std::string> v = split(response, ' ');
     std::string answer = answerToClient(v);
-    if  (!answer.empty()) {
-        knn.setK(std::stoi(v[0]));
-        knn.setMetric(v[1]);
-    }
-    dio.write(answer);
+    updateSettings(v, answer);
+
 }
 
 std::vector<std::string> AlgorithSettings::split(const std::string &s, char delim) {
@@ -48,4 +45,12 @@ std::string AlgorithSettings::answerToClient(std::vector<std::string> v) {
         answer += validMetric(v[1]);
         return answer;
     }
+}
+
+void AlgorithSettings::updateSettings(std::vector<std::string> v, std::string &answer) {
+    if  (!answer.empty()) {
+        knn.setK(std::stoi(v[0]));
+        knn.setMetric(v[1]);
+    }
+    dio.write(answer);
 }

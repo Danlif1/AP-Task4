@@ -3,3 +3,12 @@
 //
 
 #include "ClassifyData.h"
+
+void ClassifyData::execute() {
+    if (knn.getClassifiedData().empty() || knn.getUnclassifiedData().empty()) {
+        dio.write("Please upload data\n");
+    } else {
+        knn.predict_all();
+        dio.write("classifying data complete\n");
+    }
+}

@@ -10,6 +10,8 @@
 
 class AlgorithSettings : public Command {
 private:
+
+
     std::string validK(const std::string &s);
 
     std::string validMetric(const std::string &s);
@@ -21,9 +23,13 @@ private:
     void updateSettings(std::vector<std::string> v, std::string &answer);
 
 public:
-    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {};
+    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+        description = "2. algorithm settings\n";
+        instruction = "The current KNN parameters are: K = " + std::to_string(knn.getK()) +
+                ", distance metric = " + knn.getMetric() + "\n";
+    };
 
-    virtual void execute() override;
+    void execute() override;
 };
 
 

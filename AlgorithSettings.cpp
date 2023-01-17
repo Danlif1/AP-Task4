@@ -48,7 +48,7 @@ std::string AlgorithSettings::answerToClient(std::vector<std::string> v) {
 }
 
 void AlgorithSettings::updateSettings(std::vector<std::string> v, std::string &answer) {
-    if  (!answer.empty()) {
+    if  (answer.empty()) {
         knn.setK(std::stoi(v[0]));
         knn.setMetric(v[1]);
     }

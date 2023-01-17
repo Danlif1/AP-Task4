@@ -8,6 +8,7 @@
 KNN::KNN() {
     KNN::k = 5;
     KNN::distance_metric = "EUC";
+
 }
 
 /**
@@ -26,16 +27,14 @@ KNN::KNN(int k, std::string metric) {
  * @param classified_points Vector that contains classified data.
  */
 void KNN::fit(std::vector<Point> classified_points) {
-
+    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
+    //if we decide to not separate them we need to take care of functions in distance method.
     KNN::classified_data = classified_points;
 }
 
-/**
- * Fits the validation data to the knn object. validation data consists of data(x).
- * @param unclassified_point Vector that contains unclassified data.
- */
-void KNN::fit_unclassified(std::vector<Point> unclassified_points) {
-
+void KNN::fit_unclassified(std::vector<Point> unclassified_point) {
+    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
+    //if we decide to not separate them we need to take care of functions in distance method.
     KNN::unclassified_data = unclassified_point;
 
 }
@@ -150,6 +149,14 @@ std::string KNN::nearestNeighbor(std::vector<std::tuple<double, std::string>> di
 
     }
     return max_label;
+}
+
+std::vector<Point> KNN::getClassifiedData() {
+    return this->classified_data;
+}
+
+std::vector<Point> KNN::getUnclassifiedData() {
+    return this->unclassified_data;
 }
 
 

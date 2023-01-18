@@ -33,7 +33,11 @@ public:
 
     void fit(std::vector<Point> classified_point);
 
-    void fit_unclassified(std::vector<Point> unclassified_points);
+    std::vector<Point> getClassifiedData();
+
+    std::vector<Point> getUnclassifiedData();
+
+    void fit_unclassified(std::vector<Point> unclassified_point);
 
     std::string predict(Point newpoint);
 

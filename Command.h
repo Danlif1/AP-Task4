@@ -12,8 +12,7 @@
 
 class Command {
 private:
-    DefaultIO &dio;
-    KNN &knn;
+
 
 protected:
     std::string description; // description in the menu.
@@ -22,6 +21,8 @@ protected:
 
     DefaultIO &getDio() const;
 
+    DefaultIO &dio;
+    KNN &knn;
 public:
     Command(DefaultIO &dio, KNN &knn);
 

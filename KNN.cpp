@@ -105,7 +105,7 @@ std::string KNN::predict(Point newpoint, int place) {
 void KNN::predict_all() {
     for (int i = 0; i < train_and_test.size(); i++) {
         for (int j = 0; j < (train_and_test[i]).second.size(); i++) {
-            all_labels.push_back(predict((train_and_test[i]).second[j]),i);
+            all_labels.push_back(predict((train_and_test[i]).second[j],i));
         }
     }
 }
@@ -169,12 +169,12 @@ std::string KNN::nearestNeighbor(std::vector<std::tuple<double, std::string>> di
     return max_label;
 }
 
-std::vector<Point> KNN::getClassifiedData() {
-    return this->classified_data;
+std::vector<Point> KNN::getClassifiedData(int place) {
+    return this->train_and_test[place].first;
 }
 
-std::vector<Point> KNN::getUnclassifiedData() {
-    return this->unclassified_data;
+std::vector<Point> KNN::getUnclassifiedData(int place) {
+    return this->train_and_test[place].second;
 }
 
 

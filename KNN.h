@@ -2,6 +2,7 @@
 #ifndef AP_TASK3_KNN_H
 #define AP_TASK3_KNN_H
 
+#include <utility>
 #include <tuple>
 #include <algorithm>
 #include "CalcDist.h"
@@ -16,7 +17,7 @@ class KNN {
 
     // We have a vector that holds the train files and the test files in a tuple.
     std::vector<std::pair<std::vector<Point>,std::vector<Point>>> train_and_test;
-    std::vector<std::tuple<double, std::string>> distance(std::vector<double> a);
+    std::vector<std::tuple<double, std::string>> distance(std::vector<double> a, int place);
     std::string nearestNeighbor(std::vector<std::tuple<double, std::string>> distances) const;
 
 
@@ -35,9 +36,9 @@ public:
 
 //    void fit(std::vector<Point> classified_point);
 
-    std::vector<Point> getClassifiedData();
+    std::vector<Point> getClassifiedData(int);
 
-    std::vector<Point> getUnclassifiedData();
+    std::vector<Point> getUnclassifiedData(int);
 
 //    void fit_unclassified(std::vector<Point> unclassified_point);
 
@@ -45,7 +46,7 @@ public:
 
     void cleanFiles();
 
-    std::string predict(Point newpoint);
+    std::string predict(Point newpoint, int place);
 
     void predict_all();
 

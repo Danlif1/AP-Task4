@@ -34,7 +34,7 @@ void DownloadResult::execute() {
     defaultIo.write("Enter path for results file: ");
     std::string returnFile = dio.read();
     std::fstream readingFile(returnFile, std::ios::in);
-    std::string results_path =  "Thread" + std::to_string(pthread_self()) + "results.txt";
+    std::string results_path =  "Thread" + std::to_string(pthread_self());
     std::fstream writingFile(results_path,  std::ios::out | std::ios::in | std::ios::trunc);
     int lineNumber = 1;
     std::string classify;
@@ -47,5 +47,6 @@ void DownloadResult::execute() {
     defaultIo.sendFile(writingFile, SocketIO::getFileSize(results_path));
     defaultIo.write("Upload Complete.");
     std::remove(results_path.data());
+    // waiting for enter.
     std::string param = defaultIo.read();
 }

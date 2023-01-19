@@ -47,7 +47,10 @@ void UploadFile::execute() {
     std::vector<Point> unclassifiedPoints;
     //creating an array of classified points.
     while (unclassifiedPointReader.getNextPoint(ucPoint)) { unclassifiedPoints.push_back(ucPoint); }
-    knn.fit_train_and_test(classifiedPoints,unclassifiedPoints);
+
+    // we don't want to save the previous unclassified file with the new classified file by mistake.
+    knn.fit(classifiedPoints);
+    knn.fit_unclassified(unclassifiedPoints);
     dio.write("Upload complete.")
 
 }

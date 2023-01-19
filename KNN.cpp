@@ -21,30 +21,24 @@ KNN::KNN(int k, std::string metric) {
     KNN::distance_metric = metric;
 }
 
-////point might not need to be a class of its own, if it is it's only to separate the vector from the label
-///**
-// * Fits the training data to the knn object. training data consists of data(x) and labels(y).
-// * @param classified_points Vector that contains classified data.
-// */
-//void KNN::fit(std::vector<Point> classified_points) {
-//    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
-//    //if we decide to not separate them we need to take care of functions in distance method.
-//    KNN::classified_data = classified_points;
-//}
-//
-//void KNN::fit_unclassified(std::vector<Point> unclassified_point) {
-//    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
-//    //if we decide to not separate them we need to take care of functions in distance method.
-//    KNN::unclassified_data = unclassified_point;
-//}
-
-void KNN::fit_train_and_test(std::vector<Point> train, std::vector<Point> test){
-    KNN::train_and_test.push_back(std::make_pair(train,test));
+//point might not need to be a class of its own, if it is it's only to separate the vector from the label
+/**
+ * Fits the training data to the knn object. training data consists of data(x) and labels(y).
+ * @param classified_points Vector that contains classified data.
+ */
+void KNN::fit(std::vector<Point> classified_points) {
+    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
+    //if we decide to not separate them we need to take care of functions in distance method.
+    KNN::classified_data = classified_points;
 }
 
-void KNN::cleanFiles(){
-    train_and_test.clear();
+void KNN::fit_unclassified(std::vector<Point> unclassified_point) {
+    //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
+    //if we decide to not separate them we need to take care of functions in distance method.
+    KNN::unclassified_data = unclassified_point;
+
 }
+
 /**
  * getter for k
  * @return k
@@ -80,15 +74,11 @@ void KNN::setMetric(std::string metric) {
 }
 
 /**
- */
-/**
  * Predicts the label of a given unclassified vector.
- * @param newpoint The point we want to predict
- * @param place The place in the vector of tuples.
  * @return The label of the point.
  */
-std::string KNN::predict(Point newpoint, int place) {
-    std::vector<std::tuple<double, std::string>> dis_from_point = distance(newpoint.getAll(),place);
+std::string KNN::predict(Point newpoint) {
+    std::vector<std::tuple<double, std::string>> dis_from_point = distance(newpoint.getAll());
     std::string label = nearestNeighbor(dis_from_point);
     return label;
 }
@@ -97,16 +87,9 @@ std::string KNN::predict(Point newpoint, int place) {
  * Predicts the label of all unclassified vectors.
  * @return Vector of labels.
  */
-//void KNN::predict_all() {
-//    for (int i = 0; i < unclassified_data.size(); i++) {
-//        all_labels.push_back(predict(unclassified_data[i]));
-//    }
-//}
 void KNN::predict_all() {
-    for (int i = 0; i < train_and_test.size(); i++) {
-        for (int j = 0; j < (train_and_test[i]).second.size(); i++) {
-            all_labels.push_back(predict((train_and_test[i]).second[j],i));
-        }
+    for (int i = 0; i < unclassified_data.size(); i++) {
+        all_labels.push_back(predict(unclassified_data[i]));
     }
 }
 
@@ -121,16 +104,15 @@ std::vector<std::string> KNN::getAllLabels() {
 /**
  * Calculates the distance from the unclassified vector, to the classified data we have.
  * @param a The unclassified information.
- * @param place The place in the vector of tuples.
  * @return A vector of tuples (the tuple will consist of the distance and the classified label) with the distance of the unclassified data from the classified vector.
  */
-std::vector<std::tuple<double, std::string>> KNN::distance(std::vector<double> a, int place) {
+std::vector<std::tuple<double, std::string>> KNN::distance(std::vector<double> a) {
     std::vector<std::tuple<double, std::string>> dis_from_point;
     double tmp;
-    for (int i = 0; i < KNN::train_and_test[place].first.size(); ++i) {
+    for (int i = 0; i < KNN::classified_data.size(); ++i) {
         //add calcDistance to distance file
-        tmp = calcDistance(distance_metric, a, train_and_test[place].first[i].getAll());
-        dis_from_point.emplace_back(tmp, train_and_test[place].first[i].getType());
+        tmp = calcDistance(distance_metric, a, classified_data[i].getAll());
+        dis_from_point.emplace_back(tmp, classified_data[i].getType());
     }
     return dis_from_point;
 }
@@ -169,14 +151,13 @@ std::string KNN::nearestNeighbor(std::vector<std::tuple<double, std::string>> di
     return max_label;
 }
 
-std::vector<Point> KNN::getClassifiedData(int place) {
-    return this->train_and_test[place].first;
+std::vector<Point> KNN::getClassifiedData() {
+    return this->classified_data;
 }
 
-std::vector<Point> KNN::getUnclassifiedData(int place) {
-    return this->train_and_test[place].second;
+std::vector<Point> KNN::getUnclassifiedData() {
+    return this->unclassified_data;
 }
-
 
 
 

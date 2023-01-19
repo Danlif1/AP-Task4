@@ -20,7 +20,7 @@ void UploadFile::execute() {
     std::string response = dio.read();
     if (!CheckFile(fileName)) {
         //The file doesn't end with .csv, so we need to terminate the program.
-        dio.write("invalid input")
+        dio.write("invalid input");
         return 0;
     } else {
         // Opening the file.
@@ -31,7 +31,7 @@ void UploadFile::execute() {
     std::vector<Point> classifiedPoints;
     //creating an array of classified points.
     while (classifiedPointReader.getNextPoint(cPoint)) { classifiedPoints.push_back(cPoint); }
-    dio.write("Upload complete.")
+    dio.write("Upload complete.");
     dio.write(getInstruction(2));
     std::string response2 = dio.read();
     if (!CheckFile(response2)) {
@@ -51,7 +51,7 @@ void UploadFile::execute() {
     // we don't want to save the previous unclassified file with the new classified file by mistake.
     knn.fit(classifiedPoints);
     knn.fit_unclassified(unclassifiedPoints);
-    dio.write("Upload complete.")
+    dio.write("Upload complete.");
 
 }
 

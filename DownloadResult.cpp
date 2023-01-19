@@ -31,7 +31,7 @@ void DownloadResult::execute() {
     if(results.empty()){
         dio.write("please classify the data");
     }
-    defaultIo.write("Enter path for results file: ");
+    dio.write("Enter path for results file: ");
     std::string returnFile = dio.read();
     std::fstream readingFile(returnFile, std::ios::in);
     std::string results_path =  "Thread" + std::to_string(pthread_self());

@@ -6,12 +6,17 @@
 #include <regex>
 
 void CLI::start() {
+    while (true) {
+        printMenu();
+        waitForInput();
+        //TODO: See how to exit loop based on command 8
+    }
 
 }
 
 
 std::string CLI::printMenu() {
-    std::string response;
+    std::string response = "Welcome to the KNN Classifier Server. Please choose an option.\n";
     for (int i = 0; i < commands.size(); ++i) {
         response += commands[i]->getDescription();
     }

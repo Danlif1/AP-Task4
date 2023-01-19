@@ -11,6 +11,7 @@
 class SocketIO: public DefaultIO {
     void write(double d) override;
     void write(std::string text) override;
+    void sendFile(std::fstream& file_s, long file_size) override; //full file stream
     std::string read() override;
 };
 

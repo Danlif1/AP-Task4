@@ -15,6 +15,8 @@ class StandardIO : public DefaultIO {
 
     void write(std::string text) override;
 
+    //void sendFile(std::fstream& file_s, long file_size);
+
     std::string read() override;
 };
 

@@ -22,7 +22,9 @@ protected:
     DefaultIO &getDio() const;
 
     DefaultIO &dio;
+
     KNN &knn;
+
 public:
     Command(DefaultIO &dio, KNN &knn);
 

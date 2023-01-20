@@ -13,19 +13,25 @@
 #include <unistd.h>
 #include <cstring>
 #include <string>
+#include "StandardIO.h"
+#include "SocketIO.h"
+
 
 class Client {
     int port;
     const char *ip;
     int client_socket;
     struct sockaddr_in remote_address;
-    char buffer[4096];
+
+protected:
+    StandardIO *stio;
+    SocketIO *soio;
 
     void sendToServer(std::string input);
     void closeSocket();
 
 public:
-    Client(int port, char *ip);
+    Client(int port, const char *ip);
     void connectToServer();
     bool receiveInput();
     void receiveFromServer();

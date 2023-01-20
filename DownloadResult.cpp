@@ -31,11 +31,10 @@ void DownloadResult::execute() {
     if(results.empty()){
         dio.write("please classify the data");
     }
-    defaultIo.write("Enter path for results file: ");
+    dio.write("Enter path for results file: ");
     std::string returnFile = dio.read();
     std::fstream readingFile(returnFile, std::ios::in);
-    std::string results_path =  "Thread" + std::to_string(pthread_self());
-    std::fstream writingFile(results_path,  std::ios::out | std::ios::in | std::ios::trunc);
+    std::fstream writingFile(returnFile,  std::ios::out | std::ios::in | std::ios::trunc);
     int lineNumber = 1;
     std::string classify;
     while (getline(readingFile, classify)) {
@@ -44,9 +43,9 @@ void DownloadResult::execute() {
         lineNumber++;
     }
     writingFile.seekg(0, std::ios::beg);
-    defaultIo.sendFile(writingFile, SocketIO::getFileSize(results_path));
-    defaultIo.write("Upload Complete.");
-    std::remove(results_path.data());
+    dio.sendFile(writingFile, SocketIO::getFileSize(returnFile));
+    dio.write("Upload Complete.");
+    std::remove(returnFile.data());
     // waiting for enter.
-    std::string param = defaultIo.read();
+    std::string param = dio.read();
 }

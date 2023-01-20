@@ -6,11 +6,14 @@
 #define AP_TASK4_UPLOADFILE_H
 
 #include "Command.h"
-#include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
 #include <sys/socket.h>
+#include <cstdio>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <cstring>
+#include <fstream>
 #include <unistd.h>
 #include "PointReader.h"
 

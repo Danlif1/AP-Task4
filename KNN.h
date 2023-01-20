@@ -44,8 +44,6 @@ public:
     void predict_all();
 
     std::vector<std::string> getAllLabels();
-
-    void cleanResults();
 };
 
 #endif //AP_TASK3_KNN_H

@@ -29,12 +29,14 @@ KNN::KNN(int k, std::string metric) {
 void KNN::fit(std::vector<Point> classified_points) {
     //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
     //if we decide to not separate them we need to take care of functions in distance method.
+    KNN::classified_data.clear();
     KNN::classified_data = classified_points;
 }
 
 void KNN::fit_unclassified(std::vector<Point> unclassified_point) {
     //need to decide if we store the data as to separate arrays. might be better to utilize the class point.
     //if we decide to not separate them we need to take care of functions in distance method.
+    KNN::unclassified_data.clear();
     KNN::unclassified_data = unclassified_point;
 
 }

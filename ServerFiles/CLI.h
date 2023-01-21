@@ -5,13 +5,13 @@
 #ifndef AP_TASK4_CLI_H
 #define AP_TASK4_CLI_H
 
-#include "DefaultIO.h"
-#include "Command.h"
-#include "UploadFile.h"
-#include "AlgorithmSettings.h"
-#include "ClassifyData.h"
-#include "DisplayResult.h"
-#include "DownloadResult.h"
+#include "../SocketFiles/DefaultIO.h"
+#include "CommandFiles/Command.h"
+#include "CommandFiles/UploadFile.h"
+#include "CommandFiles/AlgorithmSettings.h"
+#include "CommandFiles/ClassifyData.h"
+#include "CommandFiles/DisplayResult.h"
+#include "CommandFiles/DownloadResult.h"
 #include <map>
 
 
@@ -23,7 +23,7 @@ class CLI {
     void waitForInput();
     bool isValidInput(std::string input);
 public:
-    CLI(DefaultIO &dio, KNN &knn) : dio(dio), knn(knn) {
+    CLI(SocketIO &dio, KNN &knn) : dio(dio), knn(knn) {
         this->dio = dio;
         this->knn = knn;
         commands.insert({1, new UploadFile(dio, knn)});

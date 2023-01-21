@@ -13,8 +13,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <string>
-#include "StandardIO.h"
-#include "SocketIO.h"
+#include "../SocketFiles/StandardIO.h"
+#include "../SocketFiles/SocketIO.h"
 
 
 class Client {

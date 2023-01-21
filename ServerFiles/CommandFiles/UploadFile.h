@@ -22,7 +22,7 @@ class UploadFile : public Command {
 private:
     std::string insturction2;
 public:
-    UploadFile(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+    UploadFile(SocketIO &dio, KNN &knn) : Command(dio, knn) {
         description = "1. upload an unclassified csv file\n";
         instruction = "Please upload your local train CSV file.";
         insturction2 = "Please upload your local test CSV file.";

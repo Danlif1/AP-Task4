@@ -13,7 +13,7 @@
  * @param dio DefaultIO used.
  * @param knn The knn class used.
  */
-DownloadResult::DownloadResult(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+DownloadResult::DownloadResult(SocketIO &dio, KNN &knn) : Command(dio, knn) {
     description = "download results";
 }
 

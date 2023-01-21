@@ -16,7 +16,7 @@
 
 class DisplayResult : public Command {
 public:
-    DisplayResult(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+    DisplayResult(SocketIO &dio, KNN &knn) : Command(dio, knn) {
         description = "4. display results\n";
     };
     void execute() override;

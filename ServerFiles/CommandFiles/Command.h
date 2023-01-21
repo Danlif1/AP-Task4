@@ -7,7 +7,7 @@
 
 
 #include <string>
-#include "../../SocketFiles/DefaultIO.h"
+#include "../../SocketFiles/SocketIO.h"
 #include "../KNNFIles/KNN.h"
 class Command {
 private:
@@ -20,10 +20,10 @@ protected:
 
     DefaultIO &getDio() const;
 
-    DefaultIO &dio;
+    SocketIO &dio;
     KNN &knn;
 public:
-    Command(DefaultIO &dio, KNN &knn);
+    Command(SocketIO &dio, KNN &knn);
 
     virtual void execute() = 0;
 

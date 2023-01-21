@@ -10,7 +10,7 @@
 
 class ClassifyData : public Command {
 public:
-    ClassifyData(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+    ClassifyData(SocketIO &dio, KNN &knn) : Command(dio, knn) {
         description = "3. classify data\n";
         instruction = "";
     };

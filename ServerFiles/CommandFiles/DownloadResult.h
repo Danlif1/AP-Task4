@@ -12,7 +12,7 @@
 
 class DownloadResult : public Command {
 public:
-    DownloadResult(DefaultIO &dio, KNN &knn);
+    DownloadResult(SocketIO &dio, KNN &knn);
     void execute() override;
 };
 

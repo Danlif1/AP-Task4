@@ -2,10 +2,14 @@
 #include "ClientInputCheck.h"
 #include "Client.h"
 
-Client::Client(int port, char *ip) {
+#include <utility>
+
+Client::Client(int port, const char *ip) {
     Client::port = port;
     Client::ip = ip;
     Client::client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    Client::stio = new StandardIO();
+    Client::soio = new SocketIO(client_socket);
     if (Client::client_socket < 0) {
         std::perror("error creating socket");
     }
@@ -24,18 +28,21 @@ void Client::connectToServer() {
 }
 
 void Client::sendToServer(std::string input) {
-    int data_len = input.size() + 1;
     // sending data to the server
-    int sent_bytes = send(client_socket, input.c_str(), data_len, 0);
-    if (sent_bytes < 0) {
-        std::perror("error sending message");
-    }
+    soio->write(input);
 }
 
 bool Client::receiveInput() {
     std::string input;
-    std::getline(std::cin, input);
-    if (input == "-1") {
+    input = stio->read();
+    if (input == "1") {
+        //TODO: Read from file and send to server function
+        return true;
+    } else if (input == "5") {
+        //TODO: Send to server and download from server function
+        return true;
+    } else if (input == "8") {
+        soio->write(input);
         closeSocket();
         return false;
     } else {
@@ -49,15 +56,6 @@ void Client::closeSocket() {
 }
 
 void Client::receiveFromServer() {
-    memset(Client::buffer, 0, sizeof(Client::buffer));
-    int expected_data_len = sizeof(buffer);
-    int read_bytes = recv(Client::client_socket, buffer, expected_data_len, 0);
-    if (read_bytes < 0) {
-        std::perror("error reading from socket");
-    } else if (read_bytes == 0) {
-        // if connection to server is closed we end the program
-        std::perror("server disconnected");
-    } else {
-        std::cout << buffer << std::endl;
-    }
+    std::string input = soio->read();
+    stio->write(input);
 }

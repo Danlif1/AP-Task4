@@ -9,6 +9,7 @@
 #include "DefaultIO.h"
 
 class StandardIO : public DefaultIO {
+public:
     std::string input;
 
     void write(double d) override;

@@ -14,33 +14,10 @@
  * @return int Returning 0 if there is a problem with the inputs.
  */
 int main(int argc, char const* argv[]) {
-    if(argc != 3) {
-        std::cout << "Please enter both file and port into argv" << std::endl;
-        return 0;
-    }
-    std::fstream fout;
-    std::string fileName = argv[1];
-    if (!CheckFile(fileName)) {
-        //The file doesn't end with .csv, so we need to terminate the program.
-        std::cout << "The file doesn't end with .csv" << std::endl;
-        return 0;
-    } else {
-        // Opening the file.
-        fout.open(fileName, std::ios::out | std::ios::app);
-    }
-    PointReader classifiedPointReader(fileName);
-    Point cPoint;
-    std::vector<Point> classifiedPoints;
-    //creating an array of classified points.
-    while (classifiedPointReader.getNextPoint(cPoint)) { classifiedPoints.push_back(cPoint); }
-    if(!IsSameSize(classifiedPoints)){
-        std::cout << "Not all vectors are valid, please use a different file." << std::endl;
-        return 0;
-    }
-    Server server(atoi(argv[2]),classifiedPoints);
+
+    Server server(atoi(argv[1]));
     while(true) {
         server.connectToClient();
-        while (server.receiveFromClient()) {}
     }
     server.closeSocket();
     delete &server;

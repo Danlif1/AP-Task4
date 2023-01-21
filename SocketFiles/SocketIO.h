@@ -16,13 +16,15 @@
 #include "DefaultIO.h"
 
 class SocketIO : public DefaultIO {
-private:
-    int client_sock;
+    int client_socket;
+
     char buffer[4096];
 
-    int SocketIO::sendTo(const std::string &text)
+    int sendTo(const std::string &text);
 
 public:
+    SocketIO(int client_socket) : client_socket(client_socket) {};
+
     void write(double d) override;
 
     int send_int(int num) const;
@@ -31,7 +33,8 @@ public:
 
     static long getFileSize(const std::string &filename);
 
-    void sendFile(std::fstream &file_s, long file_size) override; //full file stream
+    void sendFile(std::fstream &file_s, long file_size); //full file stream
+
     std::string read() override;
 
 

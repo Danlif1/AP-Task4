@@ -42,7 +42,7 @@ int SocketIO::send_int(int num) const
     int left = sizeof(conv);
     int rc;
     do {
-        rc = send(client_sock, data, left, 0);
+        rc = send(client_socket, data, left, 0);
         if (rc < 0) {
             std::cout << "Error sending size." << std::endl;
             return -1;
@@ -67,7 +67,7 @@ void SocketIO::sendFile(std::fstream &file_s, long file_size) {
     while(left > 0) {
         long sending = (4096<left)? 4096: left;
         file_s.read(buffer, sending);
-        sent = send(client_sock, buffer, sending, 0);
+        sent = send(client_socket, buffer, sending, 0);
         if (sent < 0) {
             std::cout << "Server : Error sending file." << std::endl;
         } else {
@@ -82,3 +82,5 @@ long SocketIO::getFileSize(const std::string &filename) {
     int rc = stat(filename.c_str(), &stat_buf);
     return rc == 0 ? stat_buf.st_size : -1;
 }
+
+

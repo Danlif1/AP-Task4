@@ -12,11 +12,11 @@ class StandardIO : public DefaultIO {
 public:
     std::string input;
 
+    StandardIO() = default;
+
     void write(double d) override;
 
     void write(std::string text) override;
-
-    //void sendFile(std::fstream& file_s, long file_size);
 
     std::string read() override;
 };

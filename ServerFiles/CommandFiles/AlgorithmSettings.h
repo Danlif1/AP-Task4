@@ -8,7 +8,7 @@
 
 #include "Command.h"
 
-class AlgorithSettings : public Command {
+class AlgorithmSettings : public Command {
 private:
 
 
@@ -23,7 +23,7 @@ private:
     void updateSettings(std::vector<std::string> v, std::string &answer);
 
 public:
-    AlgorithSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
+    AlgorithmSettings(DefaultIO &dio, KNN &knn) : Command(dio, knn) {
         description = "2. algorithm settings\n";
         instruction = "The current KNN parameters are: K = " + std::to_string(knn.getK()) +
                 ", distance metric = " + knn.getMetric() + "\n";

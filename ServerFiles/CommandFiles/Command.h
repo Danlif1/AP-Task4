@@ -27,7 +27,7 @@ public:
 
     virtual void execute() = 0;
 
-    virtual ~Command() = default;
+    virtual ~Command();
 
     void printDesc();
 

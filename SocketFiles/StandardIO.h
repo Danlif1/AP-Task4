@@ -14,8 +14,6 @@ public:
 
     StandardIO() = default;
 
-    void write(double d) override;
-
     void write(std::string text) override;
 
     std::string read() override;

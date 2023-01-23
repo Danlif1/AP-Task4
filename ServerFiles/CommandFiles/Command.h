@@ -8,7 +8,7 @@
 
 #include <string>
 #include "../../SocketFiles/SocketIO.h"
-#include "../KNNFIles/KNN.h"
+#include "../KNNFiles/KNN.h"
 class Command {
 private:
 
@@ -27,11 +27,11 @@ public:
 
     virtual void execute() = 0;
 
-    virtual ~Command();
+    virtual ~Command() = default;
 
-    virtual void printDesc();
+    void printDesc();
 
-    virtual void printInst();
+    void printInst();
 
     const std::string &getDescription() const;
 

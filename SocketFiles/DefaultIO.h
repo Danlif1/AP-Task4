@@ -14,8 +14,6 @@ public:
 
     virtual void write(std::string text) = 0;
 
-    virtual void write(double d) = 0;
-
     virtual ~DefaultIO() = default;
 };
 

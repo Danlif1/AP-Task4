@@ -20,12 +20,12 @@ class SocketIO : public DefaultIO {
 
     char buffer[4096];
 
+    bool active = true;
+
     int sendTo(const std::string &text);
 
 public:
     SocketIO(int client_socket) : client_socket(client_socket) {};
-
-    void write(double d) override;
 
     int send_int(int num) const;
 
@@ -37,6 +37,9 @@ public:
 
     std::string read() override;
 
+    void close();
+
+    bool is_active();
 
 };
 

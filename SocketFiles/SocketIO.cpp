@@ -6,10 +6,6 @@
 #include <sys/stat.h>
 #include "SocketIO.h"
 
-void SocketIO::write(double d) {
-//send to client
-}
-
 void SocketIO::write(std::string text) {
     if (SocketIO::sendTo(text) < 0) {
         perror("error sending message");
@@ -83,4 +79,11 @@ long SocketIO::getFileSize(const std::string &filename) {
     return rc == 0 ? stat_buf.st_size : -1;
 }
 
+void SocketIO::close() {
+    active = false;
+    ::close(client_socket);
+}
 
+bool SocketIO::is_active(){
+    return active;
+}

@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include "PointFiles/PointReader.h"
 #include "KNNFiles/KNN.h"
-#include "CLI.h"
+#include "CLIFiles/CLI.h"
 #include "../SocketFiles/StandardIO.h"
 #include "../SocketFiles/SocketIO.h"
 

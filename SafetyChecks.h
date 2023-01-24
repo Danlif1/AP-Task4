@@ -6,11 +6,7 @@
 #define AP_TASK3_SAFETYCHECKS_H
 
 #include "Point.h"
-bool NumberOfArguments(int);
 bool PointsCount(long, long);
-bool KCheck(std::string);
 bool IsSameSize(std::vector<Point>);
 bool GoodVector(Point, Point);
-bool CheckFile (std::string const &);
-bool CheckMetric(std::string);
 #endif //AP_TASK3_SAFETYCHECKS_H

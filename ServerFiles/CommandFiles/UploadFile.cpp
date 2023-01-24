@@ -10,8 +10,9 @@ const std::string &UploadFile::getInstruction(int part){
             return instruction;
         case 2:
             return insturction2;
-
     }
+    // We won't get here, but we use this to remove the warning.
+    return instruction;
 }
 
 

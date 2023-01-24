@@ -23,9 +23,11 @@ std::string SocketIO::read() {
     int read_bytes = recv(this->client_socket, buffer, expected_data_len, 0);
     if (read_bytes < 0) {
         std::perror("error reading from socket");
+        return "";
     } else if (read_bytes == 0) {
         // if connection to server is closed we end the program
         std::perror("server disconnected");
+        return "";
     } else {
         return std::string(buffer);
     }

@@ -129,7 +129,8 @@ std::string KNN::nearestNeighbor(std::vector<std::tuple<double, std::string>> di
     std::sort(distances.begin(), distances.end());
     std::vector<std::string> label_of_dis;
     std::string most_common;
-    int tempK = min(k,distances.size());
+    int	distSize = distances.size();
+    int tempK = std::min(k,distSize);
     for (int i = 0; i < tempK; ++i) {
         label_of_dis.emplace_back(std::get<1>(distances[i]));
     }

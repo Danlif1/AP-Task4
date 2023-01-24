@@ -12,7 +12,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "PointReader.h"
+#include "Point.h"
 
 class DisplayResult : public Command {
 public:

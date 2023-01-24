@@ -15,7 +15,6 @@
 #include <cstring>
 #include <fstream>
 #include <unistd.h>
-#include "PointReader.h"
 #include "Point.h"
 
 

@@ -43,6 +43,7 @@ void DownloadResult::execute() {
     }
     writingFile.seekg(0, std::ios::beg);
     dio.sendFile(writingFile, SocketIO::getFileSize(returnFile));
+    knn.cleanLabels();
     dio.write("Upload Complete.");
     std::remove(returnFile.data());
     std::remove(filePath.data());

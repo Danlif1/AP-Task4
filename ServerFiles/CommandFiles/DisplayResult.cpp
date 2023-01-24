@@ -16,5 +16,6 @@ void DisplayResult::execute() {
         std::string result = std::to_string(place) + " " + knn.getAllLabels()[i];
         dio.write(result);
     }
+    knn.cleanLabels();
     dio.write("Done.");
 }

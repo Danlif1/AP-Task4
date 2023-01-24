@@ -53,19 +53,22 @@ std::vector<Point> UploadFile::getUnclassifiedFromClient() {
 void UploadFile::execute() {
     dio->write(this->instruction);
     std::vector<Point> classifiedPoints = getClassifiedFromClient();
-    dio->write("Upload complete.");
     if(!isFileGood(classifiedPoints)){
         dio->write("Upload failed.");
+        return;
     } else {
         knn->fit(classifiedPoints);
+        dio->write("Upload complete.");
         dio->write(this->insturction_2);
         std::vector<Point> unclassifiedPoints = getUnclassifiedFromClient();
         if (isFileGood(unclassifiedPoints) &&
         unclassifiedPoints[0].getAll().size() == classifiedPoints[0].getAll().size()) {
             knn->fit_unclassified(unclassifiedPoints);
             dio->write("Upload complete.");
+            return;
         } else {
             dio->write("Upload failed.");
+            return;
         }
     }
 

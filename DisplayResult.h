@@ -16,7 +16,7 @@
 
 class DisplayResult : public Command {
 public:
-    DisplayResult(DefaultIO &dio, KNN &knn);
+    DisplayResult(DefaultIO* dio, KNN* knn);
     void execute() override;
 };
 

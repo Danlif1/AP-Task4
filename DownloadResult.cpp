@@ -1,16 +1,29 @@
 //
-// Created by Daniel Lifshitz on 18/01/2023.
+// Created by Daniel Lifshitz on 19/01/2023.
 //
 
-#include "DisplayResult.h"
+#include <iostream>
+#include <fstream>
+#include "DownloadResult.h"
 
-DisplayResult::DisplayResult(DefaultIO* dio, KNN* knn){
-    description = "4. display results\n";
+
+/**
+ * @brief Construct a new Download Result:: Download Result object.
+ *
+ * @param dio DefaultIO used.
+ * @param knn The knn class used.
+ */
+DownloadResult::DownloadResult(DefaultIO* dio, KNN* knn) {
+    description = "download results";
     this->dio = dio;
     this->knn = knn;
 }
 
-void DisplayResult::execute() {
+/**
+ * @brief Executing the command.
+ *
+ */
+void DownloadResult::execute() {
     if (knn->getUnclassifiedData().empty()){
         dio->write("please upload data");
         return;
@@ -23,6 +36,5 @@ void DisplayResult::execute() {
         std::string result = std::to_string(place) + "\t" + knn->getAllLabels()[i];
         dio->write(result);
     }
-    dio->write("Done.");
     do {} while (dio->read() != "\n");
 }

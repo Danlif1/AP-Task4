@@ -14,7 +14,7 @@
  * @param knn The knn class used.
  */
 DownloadResult::DownloadResult(DefaultIO* dio, KNN* knn) {
-    description = "download results";
+    description = "5. download results\n";
     this->dio = dio;
     this->knn = knn;
 }

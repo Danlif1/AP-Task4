@@ -32,6 +32,7 @@ void CLI::printMenu() {
     }
     response += "8. exit\n";
     dio->write(response);
+    dio->write("$");
 }
 
 void CLI::waitForInput() {

@@ -17,6 +17,7 @@ instruction = "";
 void AlgorithmSettings::execute() {
     dio->write("The current KNN parameters are: K = " + std::to_string(knn->getK()) +
                      ", distance metric = " + knn->getMetric() + "\n");
+    dio->write("$");
     std::string response = dio->read();
     std::vector<std::string> v = split(response, ' ');
     std::string answer = answerToClient(v);
@@ -61,4 +62,5 @@ void AlgorithmSettings::updateSettings(std::vector<std::string> v, std::string &
         knn->setMetric(v[1]);
     }
     dio->write(answer);
+    dio->write("$");
 }

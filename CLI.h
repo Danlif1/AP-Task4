@@ -23,6 +23,7 @@ class CLI {
     void printMenu();
     void waitForInput();
     bool isValidInput(std::string input);
+
 public:
     CLI(DefaultIO* dio, KNN* knn);
 

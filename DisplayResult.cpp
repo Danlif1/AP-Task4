@@ -4,25 +4,36 @@
 
 #include "DisplayResult.h"
 
-DisplayResult::DisplayResult(DefaultIO* dio, KNN* knn){
+DisplayResult::DisplayResult(DefaultIO *dio, KNN *knn) {
     description = "4. display results\n";
     this->dio = dio;
     this->knn = knn;
 }
 
 void DisplayResult::execute() {
-    if (knn->getUnclassifiedData().empty()){
+    if (knn->getUnclassifiedData().empty()) {
+        dio->write("-");
         dio->write("please upload data");
+        dio->write("$");
         return;
-    } else if(knn->getAllLabels().empty()) {
+    } else if (knn->getAllLabels().empty()) {
+        dio->write("-");
         dio->write("please classify the data");
+        dio->write("$");
         return;
+    } else {
+        dio->write("*");
+        for (int i = 0; i < knn->getAllLabels().size(); i++) {
+            int place = i + 1;
+            std::string result = std::to_string(place) + "\t" + knn->getAllLabels()[i];
+            dio->write(result);
+        }
+        dio->write("Done.");
+        dio->write("$");
+        while (dio->read() != "\n") {
+           dio->write("invalid input");
+        }
+        dio->write("$");
     }
-    for (int i = 0; i < knn->getAllLabels().size(); i++){
-        int place = i+1;
-        std::string result = std::to_string(place) + "\t" + knn->getAllLabels()[i];
-        dio->write(result);
-    }
-    dio->write("Done.");
-    do {} while (dio->read() != "\n");
+
 }

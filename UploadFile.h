@@ -23,12 +23,10 @@ private:
     std::string insturction_2;
     std::vector<Point> getClassifiedFromClient();
     std::vector<Point> getUnclassifiedFromClient();
-    bool is_file_good = true;
     bool isFileGood(std::vector<Point> input);
 
 public:
     UploadFile(DefaultIO* dio, KNN* knn);
-    const std::string &getInstruction(int);
     void execute() override;
 };
 

@@ -13,9 +13,11 @@ ClassifyData::ClassifyData(DefaultIO* dio, KNN* knn) {
 
 void ClassifyData::execute() {
     if (knn->getClassifiedData().empty() || knn->getUnclassifiedData().empty()){
-        dio->write("Please upload data\n");
+        dio->write("please upload data");
+        dio->write("$");
     } else {
         knn->predict_all();
-        dio->write("classifying data complete\n");
+        dio->write("classifying data complete");
+        dio->write("$");
     }
 }

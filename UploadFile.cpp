@@ -24,7 +24,7 @@ std::vector<Point> UploadFile::getClassifiedFromClient() {
     std::string word;
     std::vector<std::string> elems;
     std::string line = dio->read();
-    while (line != "done") {
+    while (line != "$") {
         std::stringstream ss(line);
         std::string item;
         while (std::getline(ss, item, ',')) {
@@ -39,9 +39,9 @@ std::vector<Point> UploadFile::getClassifiedFromClient() {
 }
 
 std::vector<Point> UploadFile::getUnclassifiedFromClient() {
-    std::vector<Point> data;
     std::string line = dio->read();
-    while (line != "done") {
+    std::vector<Point> data;
+    while (line != "$") {
         Point p;
         p.setFromString(line, ',');
         data.push_back(p);
@@ -54,7 +54,7 @@ void UploadFile::execute() {
     dio->write(this->instruction);
     std::vector<Point> classifiedPoints = getClassifiedFromClient();
     if(!isFileGood(classifiedPoints)){
-        dio->write("Upload failed.");
+        dio->write("invalid input.");
         return;
     } else {
         knn->fit(classifiedPoints);
@@ -67,7 +67,7 @@ void UploadFile::execute() {
             dio->write("Upload complete.");
             return;
         } else {
-            dio->write("Upload failed.");
+            dio->write("invalid input.");
             return;
         }
     }

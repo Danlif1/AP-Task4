@@ -9,6 +9,7 @@
 #include "Command.h"
 
 class DownloadResult : public Command {
+    void send();
 public:
     DownloadResult(DefaultIO* dio, KNN* knn);
     void execute() override;

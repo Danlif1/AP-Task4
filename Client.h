@@ -26,6 +26,7 @@ class Client {
     bool isPathValid(std::string file_path);
     StandardIO *stio;
     SocketIO *soio;
+    char buffer[4096];
 
     void sendToServer(std::string input);
     void closeSocket();

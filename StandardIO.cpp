@@ -11,5 +11,5 @@ void StandardIO::write(std::string text) {
 
 std::string StandardIO::read() {
     getline(std::cin, this->input);
-    return input;
+    return input + "\n";
 }

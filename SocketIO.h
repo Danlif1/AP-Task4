@@ -18,7 +18,6 @@
 class SocketIO : public DefaultIO {
     int client_socket;
     char buffer[4096];
-    int sendTo(const std::string &text);
 public:
     bool error = false;
 

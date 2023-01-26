@@ -12,12 +12,11 @@ ClassifyData::ClassifyData(DefaultIO* dio, KNN* knn) {
 };
 
 void ClassifyData::execute() {
+    std::cout << "classify data" << std::endl;
     if (knn->getClassifiedData().empty() || knn->getUnclassifiedData().empty()){
-        dio->write("please upload data");
-        dio->write("$");
+        dio->write("please upload data\n$");
     } else {
         knn->predict_all();
-        dio->write("classifying data complete");
-        dio->write("$");
+        dio->write("classifying data complete\n$");
     }
 }

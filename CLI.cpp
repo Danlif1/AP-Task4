@@ -21,6 +21,7 @@ void CLI::start() {
     while (should_continue) {
         printMenu();
         waitForInput();
+        std::cout<< "finished command" << std::endl;
     }
 }
 
@@ -30,9 +31,10 @@ void CLI::printMenu() {
     for (int i = 0; i < commands.size(); ++i) {
         response += commands[i + 1]->description;
     }
-    response += "8. exit\n";
+    response += "8. exit";
     dio->write(response);
     dio->write("$");
+    std::cout << "done" << std::endl;
 }
 
 void CLI::waitForInput() {
@@ -43,7 +45,7 @@ void CLI::waitForInput() {
         int index = std::stoi(input);
         commands[index]->execute();
     } else {
-        dio->write("Invalid input");
+        dio->write("Invalid input\n");
     }
 }
 

@@ -15,6 +15,7 @@ void DisplayResult::execute() {
         dio->write("-");
         dio->write("please upload data");
         dio->write("$");
+        std::cout << "sent$" << std::endl;
         return;
     } else if (knn->getAllLabels().empty()) {
         dio->write("-");

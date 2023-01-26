@@ -6,6 +6,7 @@ Client::Client(int port, const char *ip) {
     Client::port = port;
     Client::ip = ip;
     Client::client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    Client::download_file = false;
     Client::stio = new StandardIO();
     Client::soio = new SocketIO(client_socket);
     if (Client::client_socket < 0) {
@@ -37,26 +38,20 @@ void Client::sendToServer(std::string input) {
 }
 
 bool Client::sendFile() {
-    std::cout << "Please enter file path:" << std::endl;
     std::string file_path = stio->read();
-    stio->write(file_path);
     std::ifstream file;
     file.open(file_path);
     if (file.is_open()) {
-        std::cout << "file is open" << std::endl;
         std::string line;
         while (getline(file, line)) {
             sendToServer(line);
-            std::cout << line << std::endl;
         }
         file.close();
         sendToServer("$");
-        std::cout << "Finished Reading File" << std::endl;
         return true;
     } else {
         file.close();
-        sendToServer("$");
-        std::cout << "file not found" << std::endl;
+        sendToServer("file not found");
         return false;
     }
 }
@@ -88,12 +83,10 @@ bool Client::receiveInput() {
             receiveFromServer();
             return true;
         } else {
-            receiveFromServer();
             return true;
         }
     } else if (input == "2") {
         receiveFromServer();
-        sendToServer(stio->read());
         receiveFromServer();
         return true;
     } else if (input == "3") {
@@ -103,31 +96,26 @@ bool Client::receiveInput() {
         receiveFromServer();
         return true;
     } else if (input == "5") {
-        if (soio->read() == "*") {
-            receiveFromServer();
+        receiveFromServer();
+        if (download_file) {
             std::string file_path = stio->read();
             if (isPathValid(file_path)) {
                 //TODO: Thread function
                 sendToServer("valid");
                 std::string answer = soio->read();
-                std::string file_content;
-                while (answer != "$") {
-                    file_content += answer;
-                    answer = soio->read();
-                }
+                std::string file_content = receiveForDownload();
                 saveToFile(file_content, file_path);
                 return true;
             } else {
                 sendToServer("invalid");
+                receiveFromServer();
                 return true;
             }
+            return true;
         } else {
-            //server doesn't have the results
-            receiveFromServer();
             return true;
         }
     } else if (input == "8") {
-        soio->write(input);
         closeSocket();
         return false;
     } else {
@@ -140,18 +128,15 @@ void Client::closeSocket() {
 }
 
 void Client::receiveFromServer() {
-//    std::string response = soio->read();
-//    std::string response;
-//    while (answer != "$") {
-//        response += answer;
-//        answer = soio->read();
-//    }
     std::string answer = "";
     char fu = 0;
     int n = recv(this->client_socket, &fu, sizeof(char), 0);
     bool need_input = false;
     if (fu == '*') {
         need_input = true;
+        n = recv(this->client_socket, &fu, sizeof(char), 0);
+    } else if (fu == '&') {
+        this->download_file = true;
         n = recv(this->client_socket, &fu, sizeof(char), 0);
     }
     while (fu != '$') {
@@ -169,4 +154,20 @@ void Client::receiveFromServer() {
         sendToServer(input);
     }
     return;
+}
+
+std::string Client::receiveForDownload() {
+    std::string answer = "";
+    char fu = 0;
+    int n = recv(this->client_socket, &fu, sizeof(char), 0);
+    while (fu != '$') {
+        if (n < 0) {
+            std::cerr << "ERROR reading from socket" << std::endl;
+            exit(1);
+        } else {
+            answer += fu;
+            n = recv(this->client_socket, &fu, sizeof(char), 0);
+        }
+    }
+    return answer;
 }

@@ -35,22 +35,23 @@ void DownloadResult::send() {
  */
 void DownloadResult::execute() {
     if (knn->getUnclassifiedData().empty()) {
-        dio->write("-");
         dio->write("please upload data");
         dio->write("$");
         return;
     } else if (knn->getAllLabels().empty()) {
-        dio->write("-");
         dio->write("please classify the data");
         dio->write("$");
         return;
     } else {
-        dio->write("*");
+        dio->write("&");
         dio->write("Please enter file path");
         dio->write("$");
         if (dio->read() == "valid") {
             //TODO: create thread to handle the download
             send();
+        } else {
+            dio->write("invalid path");
+            dio->write("$");
         }
     }
 

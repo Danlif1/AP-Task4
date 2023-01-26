@@ -24,7 +24,7 @@ void DisplayResult::execute() {
         dio->write("*");
         for (int i = 0; i < knn->getAllLabels().size(); i++) {
             int place = i + 1;
-            std::string result = std::to_string(place) + "\t" + knn->getAllLabels()[i];
+            std::string result = std::to_string(place) + "\t" + knn->getAllLabels()[i]+ "\n";
             dio->write(result);
         }
         dio->write("Done.");

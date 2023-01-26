@@ -15,11 +15,11 @@ this->instruction = "";
 };
 
 void AlgorithmSettings::execute() {
+    dio->write("*");
     dio->write("The current KNN parameters are: K = " + std::to_string(knn->getK()) +
                      ", distance metric = " + knn->getMetric());
     dio->write("$");
     std::string response = dio->read();
-    std::cout<< "response: " << response << std::endl;
     std::vector<std::string> v = split(response, ' ');
     std::string answer = answerToClient(v);
     updateSettings(v, answer);
@@ -38,7 +38,13 @@ std::vector<std::string> AlgorithmSettings::split(const std::string &s, char del
 
 std::string AlgorithmSettings::validK(const std::string &s) {
     std::regex re("^[0-9]+$");
-    return std::regex_match(s, re) ? "" : "invalid value for k\n";
+    if (!std::regex_match(s, re) || this->knn->getClassifiedData().empty()) {
+        return  "invalid value for k\n";
+    } else if (std::stoi(s) < this->knn->getClassifiedData().size()) {
+        return "";
+    } else {
+        return "invalid value for k\n";
+    }
 }
 
 std::string AlgorithmSettings::validMetric(const std::string &s) {

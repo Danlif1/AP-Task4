@@ -14,9 +14,8 @@ UploadFile::UploadFile(DefaultIO *dio, KNN *knn) {
 }
 
 bool UploadFile::isFileGood(std::vector<Point> input) {
-    std::cout << "is same size: " << IsSameSize(input) << std::endl;
-    std::cout << "is empty?: " << input.empty() << std::endl;
-    if (IsSameSize(input) && !input.empty()) {
+    std::cout << "isFileGood" << std::endl;
+    if (!input.empty() && IsSameSize(input)) {
         return true;
     } else {
         return false;
@@ -25,10 +24,13 @@ bool UploadFile::isFileGood(std::vector<Point> input) {
 
 std::vector<Point> UploadFile::getClassifiedFromClient() {
     std::vector<Point> data;
-
     std::string line = dio->read();
+    if (line == "file not found") {
+        return data;
+    }
+    std::vector<std::string> elems;
     while (line != "$") {
-        std::vector<std::string> elems;
+        elems.clear();
         std::stringstream ss(line);
         std::string item;
         while (std::getline(ss, item, ',')) {
@@ -45,6 +47,9 @@ std::vector<Point> UploadFile::getClassifiedFromClient() {
 std::vector<Point> UploadFile::getUnclassifiedFromClient() {
     std::string line = dio->read();
     std::vector<Point> data;
+    if (line == "file not found") {
+        return data;
+    }
     while (line != "$") {
         Point p;
         p.setFromString(line, ',');
@@ -59,11 +64,11 @@ void UploadFile::execute() {
     dio->write("$");
     std::vector<Point> classifiedPoints = getClassifiedFromClient();
     if (!isFileGood(classifiedPoints)) {
-        dio->write("invalid input.");
+        dio->write("invalid input.\n");
         return;
     } else {
         knn->fit(classifiedPoints);
-        dio->write("Upload complete.");
+        dio->write("Upload complete.\n");
         dio->write(insturction_2);
         dio->write("$");
         std::vector<Point> unclassifiedPoints = getUnclassifiedFromClient();
@@ -74,8 +79,7 @@ void UploadFile::execute() {
             dio->write("$");
             return;
         } else {
-            dio->write("invalid input.");
-            dio->write("$");
+            dio->write("invalid input.$");
             return;
         }
     }

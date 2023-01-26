@@ -27,10 +27,12 @@ class Client {
     StandardIO *stio;
     SocketIO *soio;
     char buffer[4096];
+    bool download_file;
 
     void sendToServer(std::string input);
     void closeSocket();
     bool sendFile();
+    std::string receiveForDownload();
 
 public:
     Client(int port, const char *ip);

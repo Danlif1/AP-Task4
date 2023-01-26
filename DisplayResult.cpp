@@ -12,13 +12,11 @@ DisplayResult::DisplayResult(DefaultIO *dio, KNN *knn) {
 
 void DisplayResult::execute() {
     if (knn->getUnclassifiedData().empty()) {
-        dio->write("-");
         dio->write("please upload data");
         dio->write("$");
         std::cout << "sent$" << std::endl;
         return;
     } else if (knn->getAllLabels().empty()) {
-        dio->write("-");
         dio->write("please classify the data");
         dio->write("$");
         return;
@@ -31,10 +29,7 @@ void DisplayResult::execute() {
         }
         dio->write("Done.");
         dio->write("$");
-        while (dio->read() != "\n") {
-           dio->write("invalid input");
-        }
-        dio->write("$");
+        dio->read();
     }
 
 }

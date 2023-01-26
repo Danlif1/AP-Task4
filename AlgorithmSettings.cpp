@@ -37,7 +37,7 @@ std::vector<std::string> AlgorithmSettings::split(const std::string &s, char del
 }
 
 std::string AlgorithmSettings::validK(const std::string &s) {
-    std::regex re("^[0-9]+$");
+    std::regex re("^[1-9][0-9]*$");
     if (!std::regex_match(s, re) || this->knn->getClassifiedData().empty()) {
         return  "invalid value for k\n";
     } else if (std::stoi(s) < this->knn->getClassifiedData().size()) {

@@ -28,7 +28,11 @@ void Client::connectToServer() {
 
 void Client::sendToServer(std::string input) {
     // sending data to the server
-    soio->write(input);
+    input += "\n";
+    int sent_bytes = send(this->client_socket, input.c_str(), input.size(), 0);
+    if (sent_bytes < 0) {
+        perror("error sending message");
+    }
     input.clear();
 }
 
@@ -94,7 +98,9 @@ bool Client::receiveInput() {
         receiveFromServer();
         return true;
     } else if (input == "3") {
+        std::cout << "lets get this party started" << std::endl;
         receiveFromServer();
+        std::cout << "we have left the building" << std::endl;
         return true;
     } else if (input == "4") {
         std::string answer = soio->read();
@@ -166,5 +172,6 @@ void Client::receiveFromServer() {
         }
     }
     std::cout << answer << std::endl;
+    std::cout << "finished reading from server" << std::endl;
     return;
 }

@@ -8,7 +8,6 @@
 
 class StandardIO : public DefaultIO {
 public:
-    std::string input;
 
     StandardIO() = default;
 

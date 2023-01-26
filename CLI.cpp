@@ -39,6 +39,8 @@ void CLI::printMenu() {
 
 void CLI::waitForInput() {
     std::string input = dio->read();
+    std::cout << "input: " << input << std::endl;
+
     if (input == "8"){
         should_continue = false;
     } else if (isValidInput(input)) {

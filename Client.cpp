@@ -100,18 +100,8 @@ bool Client::receiveInput() {
         receiveFromServer();
         return true;
     } else if (input == "4") {
-        std::string answer = soio->read();
-        if (answer == "*") {
-            receiveFromServer();
-            do {
-                sendToServer(stio->read());
-                answer = soio->read();
-            } while (answer != "$");
-            return true;
-        } else {
-            receiveFromServer();
-            return true;
-        }
+        receiveFromServer();
+        return true;
     } else if (input == "5") {
         if (soio->read() == "*") {
             receiveFromServer();
@@ -159,6 +149,11 @@ void Client::receiveFromServer() {
     std::string answer = "";
     char fu = 0;
     int n = recv(this->client_socket, &fu, sizeof(char), 0);
+    bool need_input = false;
+    if (fu == '*') {
+        need_input = true;
+        n = recv(this->client_socket, &fu, sizeof(char), 0);
+    }
     while (fu != '$') {
         if (n < 0) {
             std::cerr << "ERROR reading from socket" << std::endl;
@@ -169,5 +164,9 @@ void Client::receiveFromServer() {
         }
     }
     std::cout << answer << std::endl;
+    if (need_input) {
+        std::string input = stio->read();
+        sendToServer(input);
+    }
     return;
 }

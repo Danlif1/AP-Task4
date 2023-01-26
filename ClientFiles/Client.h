@@ -34,7 +34,8 @@ public:
     Client(int port, const char *ip);
     void connectToServer();
     bool receiveInput();
-    void receiveFromServer();
+    bool receiveFromServer();
+    std::string receiveFromServerNOPRINTING();
 
 
 };

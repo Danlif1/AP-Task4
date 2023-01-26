@@ -35,18 +35,90 @@ void Client::sendToServer(std::string input) {
 bool Client::receiveInput() {
     std::string input;
     input = stio->read();
-    if (input == "1") {
-        //TODO: Read from file and send to server function
-        return true;
-    } else if (input == "5") {
-        //TODO: Send to server and download from server function
-        return true;
-    } else if (input == "8") {
-        soio->write(input);
-        closeSocket();
-        return false;
+    if(input == "1" || input == "2" || input == "3" || input == "4" ||input == "5" || input == "8"){
+        switch(stoi(input)){
+            case 1: {
+                // Sending 1.
+                Client::sendToServer(input);
+                // Getting instructions.
+                Client::receiveFromServer();
+                // Reading file path.
+                std::string filePath = stio->read();
+                // If the path is good we open it and sending to the server.
+                std::fstream fout;
+                if (Client::receiveFromServer()) {
+                    fout.open(filePath, std::ios::out | std::ios::app);
+                    soio->sendFile(fout, SocketIO::getFileSize(filePath));
+                } else {
+                    return true;
+                }
+                // Getting upload complete.
+                Client::receiveFromServer();
+                // Getting another instruction.
+                Client::receiveFromServer();
+                // Reading file path.
+                filePath = stio->read();
+                if (Client::receiveFromServer()) {
+                    fout.open(filePath, std::ios::out | std::ios::app);
+                    soio->sendFile(fout,SocketIO::getFileSize(filePath));
+                } else {
+                    return true;
+                }
+                // Getting upload complete.
+                Client::receiveFromServer();
+                return true;
+            }
+            case 2: {
+                // Sending 2.
+                Client::sendToServer(input);
+                // Getting instructions.
+                Client::receiveFromServer();
+                // Reading the k and the distance metric.
+                std::string output = stio->read();
+                Client::sendToServer(output);
+                Client::receiveFromServer();
+                return true;
+            }
+            case 3: {
+                // Sending 3.
+                Client::sendToServer(input);
+                // Getting output.
+                Client::receiveFromServer();
+                return true;
+            }
+            case 4: {
+                // Sending 4.
+                Client::sendToServer(input);
+                while(Client::receiveFromServer()){}
+                return true;
+            }
+            case 5: {
+                Client::sendToServer(input);
+                // Getting instructions.
+                Client::receiveFromServer();
+                // Reading file path.
+                std::string filePath = stio->read();
+                if (Client::receiveFromServer()) {
+                    std::string ThreadFilePath = "Thread" + std::to_string(pthread_self()) + filePath;
+                    std::fstream writingFile(ThreadFilePath, std::ios::out | std::ios::in | std::ios::trunc);
+                    std::string line = Client::receiveFromServerNOPRINTING();
+                    while (line != "Done.") {
+                        writingFile << line << std::endl;
+                        std::string line = Client::receiveFromServerNOPRINTING();
+                    }
+                } else {
+                    return true;
+                }
+                return true;
+            }
+            case 8: {
+                soio->write(input);
+                closeSocket();
+                return false;
+            }
+        }
     } else {
-        Client::sendToServer(input);
+        std::cout << "Please enter a valid number." << std::endl;
         return true;
     }
 }
@@ -55,7 +127,18 @@ void Client::closeSocket() {
     close(Client::client_socket);
 }
 
-void Client::receiveFromServer() {
+bool Client::receiveFromServer() {
     std::string input = soio->read();
     stio->write(input);
+    if(input == "invalid input" || input == "please upload data" || input == "please classify the data" || input == "Done."){
+        return false;
+    } else {
+        return true;
+    }
+}
+
+std::string Client::receiveFromServerNOPRINTING() {
+    std::string input = soio->read();
+    return input;
+
 }

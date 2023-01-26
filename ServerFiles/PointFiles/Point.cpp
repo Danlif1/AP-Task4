@@ -76,7 +76,9 @@ std::vector<double> Point::getAll() const {
  */
 void Point::setFromString(std::string v, char spacer) {
     bool validInput = true;
+    bool isType = false;
     std::vector<double> v2;
+    std::string type = "";
     //using code from Task 1.
     std::stringstream ss(v);
     std::string s;
@@ -86,13 +88,23 @@ void Point::setFromString(std::string v, char spacer) {
         }
         else {
             //This is the type.
-            validInput = false;
-            std::cout << "Invalid input." << std::endl;
-            break;
+            if(isType) {
+                validInput = false;
+                std::cout << "Invalid input." << std::endl;
+                break;
+            } else {
+                isType = true;
+                type = s;
+            }
         }
     }
     if (validInput) {
+        if(isType){
         this->pointCords = v2;
+        this->type = type;
+        } else {
+            this->pointCords = v2;
+        }
     }
 }
 

@@ -17,42 +17,56 @@ const std::string &UploadFile::getInstruction(int part){
 
 
 void UploadFile::execute() {
+    // sending the instructions.
     dio.write(getInstruction(1));
     std::string response = dio.read();
-    std::fstream fout;
+    bool emp = response.empty();
+    char space = ' ';
+    // Checking the file.
     if (!CheckFile(response)) {
         //The file doesn't end with .csv, so we need to terminate the program.
         dio.write("invalid input");
         return;
     } else {
-        // Opening the file.
-        fout.open(response, std::ios::out | std::ios::app);
+        dio.write("");
     }
-    PointReader classifiedPointReader(response);
-    Point cPoint;
+
     std::vector<Point> classifiedPoints;
-    //creating an array of classified points.
-    while (classifiedPointReader.getNextPoint(cPoint)) { classifiedPoints.push_back(cPoint); }
+    // Reading the file.
+    while(!emp){
+        Point cPoint;
+        cPoint.setFromString(response, space);
+        classifiedPoints.push_back(cPoint);
+        response = dio.read();
+        emp = response.empty();
+    }
+    // Sending Upload complete.
     dio.write("Upload complete.");
+
+    // Sending another instruction.
     dio.write(getInstruction(2));
+    // Reading the file path.
     std::string response2 = dio.read();
+    emp = response2.empty();
     if (!CheckFile(response2)) {
         //The file doesn't end with .csv, so we need to terminate the program.
         dio.write("invalid input");
         return;
-    } else {
-        // Opening the file.
-        fout.open(response2, std::ios::out | std::ios::app);
     }
-    PointReader unclassifiedPointReader(response2);
-    Point ucPoint;
-    std::vector<Point> unclassifiedPoints;
-    //creating an array of classified points.
-    while (unclassifiedPointReader.getNextPoint(ucPoint)) { unclassifiedPoints.push_back(ucPoint); }
 
+    std::vector<Point> unclassifiedPoints;
+    // Reading the file.
+    while(!emp){
+        Point ucPoint;
+        ucPoint.setFromString(response2, ' ');
+        unclassifiedPoints.push_back(ucPoint);
+        response2 = dio.read();
+        emp = response2.empty();
+    }
     // we don't want to save the previous unclassified file with the new classified file by mistake.
     knn.fit(classifiedPoints);
     knn.fit_unclassified(unclassifiedPoints);
+    // Sending Upload complete.
     dio.write("Upload complete.");
 
 }

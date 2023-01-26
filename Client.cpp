@@ -94,13 +94,10 @@ bool Client::receiveInput() {
     } else if (input == "2") {
         receiveFromServer();
         sendToServer(stio->read());
-        std::cout << "waiting for response" << std::endl;
         receiveFromServer();
         return true;
     } else if (input == "3") {
-        std::cout << "lets get this party started" << std::endl;
         receiveFromServer();
-        std::cout << "we have left the building" << std::endl;
         return true;
     } else if (input == "4") {
         std::string answer = soio->read();
@@ -172,6 +169,5 @@ void Client::receiveFromServer() {
         }
     }
     std::cout << answer << std::endl;
-    std::cout << "finished reading from server" << std::endl;
     return;
 }

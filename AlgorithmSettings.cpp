@@ -19,6 +19,7 @@ void AlgorithmSettings::execute() {
                      ", distance metric = " + knn->getMetric());
     dio->write("$");
     std::string response = dio->read();
+    std::cout<< "response: " << response << std::endl;
     std::vector<std::string> v = split(response, ' ');
     std::string answer = answerToClient(v);
     updateSettings(v, answer);

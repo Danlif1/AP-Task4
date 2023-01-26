@@ -11,7 +11,7 @@ void StandardIO::write(std::string text) {
 
 std::string StandardIO::read() {
     std::string temp_data;
-//    getline(std::cin, temp_data);
-    std::cin >> temp_data;
+    getline(std::cin, temp_data);
+//    std::cin >> temp_data;
     return temp_data;
 }

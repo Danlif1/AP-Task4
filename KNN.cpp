@@ -93,6 +93,7 @@ std::string KNN::predict(Point newpoint) {
  * @return Vector of labels.
  */
 void KNN::predict_all() {
+    all_labels.clear();
     for (int i = 0; i < unclassified_data.size(); i++) {
         all_labels.push_back(predict(unclassified_data[i]));
     }

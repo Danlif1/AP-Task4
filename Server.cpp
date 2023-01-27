@@ -1,5 +1,18 @@
 #include "Server.h"
 
+void *handleClient(void *arg){
+    int* client_socket = (int*)arg;
+    DefaultIO* dio = new SocketIO(*client_socket);
+    KNN* knn = new KNN();
+    CLI* cli = new CLI(dio, knn);
+    cli->start();
+    delete cli;
+    delete dio;
+    delete knn;
+    close(*client_socket);
+    delete client_socket;
+}
+
 Server::Server(int port) {
     Server::port = port;
     Server::socket_server = socket(AF_INET, SOCK_STREAM, 0);
@@ -21,20 +34,29 @@ void Server::bindSocket() {
 }
 
 void Server::connectToClient() {
-    if (listen(socket_server, 5) < 0) {
-        perror("error listening on socket");
-    }
+    while (true){
+        if (listen(socket_server, 5) < 0) {
+            perror("error listening on socket");
+        }
 //    socklen_t client_len = sizeof(client_address);
-    int client_sock = accept(Server::socket_server, (struct sockaddr *) &(Server::client_address), &(Server::client_len));
-    if (client_sock < 0) {
-        perror("error accepting connection");
-    } else {
-        std::cout << "Client connected" << std::endl;
-        this->dio = new SocketIO(client_sock);
-        KNN knn = KNN();
-        CLI cli = CLI(dio, &knn);
-        cli.start();
+        int client_sock = accept(Server::socket_server, (struct sockaddr *) &(Server::client_address), &(Server::client_len));
+        if (client_sock < 0) {
+            perror("error accepting connection");
+        } else {
+            pthread_t pthread_client;
+            pthread_attr_t attr;
+            pthread_attr_init(&attr);
+            int* client_socket_ptr = new int(client_sock);
+            int ret = pthread_create(&pthread_client, &attr, handleClient, (void*) client_socket_ptr);
+            if (ret != 0){
+                perror("error creating thread");
+                close(client_sock);
+                delete client_socket_ptr;
+                continue;
+            }
+        }
     }
+    closeSocket();
 
 }
 

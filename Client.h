@@ -43,6 +43,9 @@ public:
     SocketIO *getSOIO(){
         return soio;
     }
+    const char *getIP(){
+        return ip;
+    }
 
     ~Client() = default;
 };
@@ -50,8 +53,9 @@ public:
 void *downloadFile(void *);
 
 struct threadHelper {
-    Client client;
+    Client* client;
     std::string file_path;
+    int new_port;
 };
 
 #endif //AP_TASK3_CLIENT_H

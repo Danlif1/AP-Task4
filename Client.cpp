@@ -6,25 +6,52 @@
 
 void *downloadFile(void *threadInfo){
     struct threadHelper* info = (struct threadHelper*) threadInfo;
-    info->client.sendToServer("valid");
-    std::string full_path = "Thread" + std::to_string(pthread_self()) + info->file_path;
-    std::string answer = info->client.getSOIO()->read();
-    std::string file_content = info->client.receiveForDownload();
-    info->client.saveToFile(file_content, full_path);
-    pthread_exit(NULL);
 
+    int client_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (client_socket < 0) {
+        std::perror("error creating socket");
+    }
+
+    struct sockaddr_in remote_address;
+    memset(&(remote_address), 0, sizeof(remote_address));
+    remote_address.sin_family = AF_INET;
+    remote_address.sin_addr.s_addr = inet_addr(info->client->getIP());
+    remote_address.sin_port = htons(info->new_port);
+    if (connect(client_socket, (struct sockaddr *) &(remote_address), sizeof(remote_address)) <
+        0) {
+        std::perror("error connecting to server");
+    }
+
+    std::string full_path = info->file_path;
+
+
+    std::string answer = "";
+    char fu = 0;
+    int n = recv(client_socket, &fu, sizeof(char), 0);
+    while (fu != '$') {
+        if (n < 0) {
+            std::cerr << "ERROR reading from socket" << std::endl;
+            exit(1);
+        } else {
+            answer += fu;
+            n = recv(client_socket, &fu, sizeof(char), 0);
+        }
+    }
+    info->client->saveToFile(answer, full_path);
+    close(client_socket);
+    pthread_exit(NULL);
 }
 
 Client::Client(int port, const char *ip) {
     Client::port = port;
     Client::ip = ip;
     Client::client_socket = socket(AF_INET, SOCK_STREAM, 0);
-    Client::download_file = false;
-    Client::stio = new StandardIO();
-    Client::soio = new SocketIO(client_socket);
     if (Client::client_socket < 0) {
         std::perror("error creating socket");
     }
+    Client::download_file = false;
+    Client::stio = new StandardIO();
+    Client::soio = new SocketIO(client_socket);
     memset(&(Client::remote_address), 0, sizeof(Client::remote_address));
     Client::remote_address.sin_family = AF_INET;
     Client::remote_address.sin_addr.s_addr = inet_addr(Client::ip);
@@ -70,7 +97,7 @@ bool Client::sendFile() {
 }
 
 void Client::saveToFile(std::string file_content, std::string file_name) {
-    std::ofstream MyFile(file_name);
+    std::ofstream MyFile(file_name, std::ios::out);
     MyFile << file_content;
     MyFile.close();
 }
@@ -113,9 +140,12 @@ bool Client::receiveInput() {
         if (download_file) {
             std::string file_path = stio->read();
             if (isPathValid(file_path)) {
-                //TODO: Thread function
+                this->sendToServer("valid");
+                std::string s = soio->read();
+                int new_port = std::stoi(s);
+
                 pthread_t thread;
-                struct threadHelper info = {*this , file_path};
+                struct threadHelper info = {this , file_path, new_port};
                 pthread_create(&thread, NULL, downloadFile, (void *)&info);
                 return true;
             } else {

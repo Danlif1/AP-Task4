@@ -15,6 +15,12 @@ public:
     void execute() override;
 };
 
+struct downloadThreadHelper {
+    int socket_server;
+    DownloadResult* downloadResult;
+};
+
+void *sendInNewSock(void *dth);
 
 
 #endif //AP_TASK4_DOWNLOADRESULT_H

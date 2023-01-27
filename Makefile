@@ -10,8 +10,8 @@ CFLAGS = -std=c++11
 
 # Both server and client.
 a.out: Server.o ClientMain.o ServerMain.o Client.o ClientInputCheck.o SafetyChecks.o Point.o KNN.o CalcDist.o SocketIO.o StandardIO.o CLI.o UploadFile.o AlgorithmSettings.o ClassifyData.o DisplayResult.o DownloadResult.o
-	$(CC) $(CFLAGS) Client.o ClientMain.o ClientInputCheck.o StandardIO.o SocketIO.o -o client.out
-	$(CC) $(CFLAGS) Server.o ServerMain.o SafetyChecks.o Point.o KNN.o CalcDist.o SocketIO.o CLI.o UploadFile.o AlgorithmSettings.o ClassifyData.o DisplayResult.o DownloadResult.o -o server.out
+	$(CC) $(CFLAGS) Client.o ClientMain.o ClientInputCheck.o StandardIO.o SocketIO.o -o client.out -lpthread
+	$(CC) $(CFLAGS) Server.o ServerMain.o SafetyChecks.o Point.o KNN.o CalcDist.o SocketIO.o CLI.o UploadFile.o AlgorithmSettings.o ClassifyData.o DisplayResult.o DownloadResult.o -o server.out -lpthread
 
 
 # Only client.

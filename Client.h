@@ -17,31 +17,41 @@
 #include "SocketIO.h"
 
 
+
 class Client {
     int port;
     const char *ip;
     int client_socket;
     struct sockaddr_in remote_address;
-    void saveToFile(std::string file_content, std::string file_name);
     bool isPathValid(std::string file_path);
     StandardIO *stio;
     SocketIO *soio;
     char buffer[4096];
     bool download_file;
 
-    void sendToServer(std::string input);
     void closeSocket();
     bool sendFile();
-    std::string receiveForDownload();
 
 public:
     Client(int port, const char *ip);
+    void sendToServer(std::string input);
+    std::string receiveForDownload();
+    void saveToFile(std::string file_content, std::string file_name);
     void connectToServer();
     bool receiveInput();
     void receiveFromServer();
+    SocketIO *getSOIO(){
+        return soio;
+    }
 
     ~Client() = default;
 };
 
+void *downloadFile(void *);
+
+struct threadHelper {
+    Client client;
+    std::string file_path;
+};
 
 #endif //AP_TASK3_CLIENT_H

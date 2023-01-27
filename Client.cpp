@@ -1,6 +1,19 @@
 
+#include <pthread.h>
 #include "ClientInputCheck.h"
 #include "Client.h"
+
+
+void *downloadFile(void *threadInfo){
+    struct threadHelper* info = (struct threadHelper*) threadInfo;
+    info->client.sendToServer("valid");
+    std::string full_path = "Thread" + std::to_string(pthread_self()) + info->file_path;
+    std::string answer = info->client.getSOIO()->read();
+    std::string file_content = info->client.receiveForDownload();
+    info->client.saveToFile(file_content, full_path);
+    pthread_exit(NULL);
+
+}
 
 Client::Client(int port, const char *ip) {
     Client::port = port;
@@ -101,10 +114,9 @@ bool Client::receiveInput() {
             std::string file_path = stio->read();
             if (isPathValid(file_path)) {
                 //TODO: Thread function
-                sendToServer("valid");
-                std::string answer = soio->read();
-                std::string file_content = receiveForDownload();
-                saveToFile(file_content, file_path);
+                pthread_t thread;
+                struct threadHelper info = {*this , file_path};
+                pthread_create(&thread, NULL, downloadFile, (void *)&info);
                 return true;
             } else {
                 sendToServer("invalid");
@@ -171,3 +183,5 @@ std::string Client::receiveForDownload() {
     }
     return answer;
 }
+
+
